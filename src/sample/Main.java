@@ -13,11 +13,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import sun.audio.*;
+
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 
 public class Main extends Application {
+
+
+
+    public Wave wave;
+
 
     public static void main(String[] args) {launch(args);}
 
@@ -67,6 +75,20 @@ public class Main extends Application {
         start_game_b.setOnAction(e -> {
             primaryStage.setScene(game_menu_s);
             System.out.println("Spiel gestartet...");
+
+            AudioPlayer soundLoop = AudioPlayer.player;
+            AudioStream BGM;
+            AudioData MD;
+            ContinuousAudioDataStream loop = null;
+            try{
+                System.out.println("Test");
+                BGM = new AudioStream(new FileInputStream("sample/Ultima_Weapon.mp3"));
+                MD = BGM.getData();
+                loop = new ContinuousAudioDataStream(MD);
+
+            }catch(Exception e1){}
+
+            soundLoop.start(loop);
         });
 
 
@@ -78,6 +100,7 @@ public class Main extends Application {
 
         ArrayList<String> userinput = new ArrayList<>();
 
+
         game_menu_s.setOnKeyPressed(
                 e -> {
                     String code = e.getCode().toString();
@@ -86,6 +109,7 @@ public class Main extends Application {
                 }
         );
 
+
         game_menu_s.setOnKeyReleased(
                 e -> {
                     String code = e.getCode().toString();
@@ -93,29 +117,13 @@ public class Main extends Application {
                 }
         );
 
+
         ArrayList<Projectile>myProjectileList = new ArrayList<>();
 
         ArrayList<Projectile>foeProjectileList = new ArrayList<>();
 
+        wave = new Wave(4, "sample/enemyBlack1.png", 200);
 
-        ArrayList<EnemyShip>enemyList = new ArrayList<>();
-
-        ArrayList<Wave>waveList = new ArrayList<>();
-
-
-        Wave wave1 = new Wave();
-        wave1.fillList(4, "sample/enemyBlack1.png", 120);
-        for (int i = 0; i < wave1.getWaveList().size(); i++) {
-            enemyList.add(wave1.getWaveList().get(i));
-            //wave1.wait(1000);
-        }
-
-        Wave wave2 = new Wave();
-        wave2.fillList(4, "sample/enemyBlack1.png", 120);
-        enemyList.addAll(wave1.getWaveList());
-
-        waveList.add(wave1);
-        waveList.add(wave2);
 
         new AnimationTimer(){
             float lastShotTime = 0;
@@ -132,13 +140,12 @@ public class Main extends Application {
 
                 gc.drawImage(space, 0, 0);
 
-                if (enemyList.size() == 0) {
-                    enemyList.addAll(waveList.get(waveCounter).getWaveList());
-                    waveCounter ++;
-                    if (waveCounter == waveList.size() + 1) {
-                        primaryStage.close();
-                    }
+                if(!wave.updateEnemies()) {
+                    wave = new Wave(3, "sample/playership1_orange.png", 300);
                 }
+
+
+                ArrayList<EnemyShip> enemyList = wave.getWaveList();
 
 
                 if (userinput.contains("UP")) playership.addVelocity(0, -400);
@@ -146,7 +153,7 @@ public class Main extends Application {
                 if (userinput.contains("LEFT")) playership.addVelocity(-400, 0);
                 if (userinput.contains("RIGHT")) playership.addVelocity(400, 0);
 
-                if (userinput.contains("SPACE") && lastShotTime >= 0.5){
+                if (userinput.contains("SPACE") && lastShotTime >= 0.25){
                     Projectile activeProjectile = new Projectile("sample/laserBlue06.png");
                     activeProjectile.setPosition(playership.getPosition_x() + 75, playership.getPosition_y() + 43);
                     activeProjectile.setVelocity(400, 0);
@@ -154,63 +161,63 @@ public class Main extends Application {
                     lastShotTime = 0;
                 }
 
+
                 playership.update(elapsedTime);
                 playership.render(gc);
+
 
                 for (Projectile projectile : myProjectileList) {
                     projectile.update(elapsedTime);
                     projectile.render(gc);
                 }
 
+
                 for (Projectile projectile : foeProjectileList) {
                     projectile.update(elapsedTime);
                     projectile.render(gc);
                 }
 
-                Iterator<EnemyShip> enemysIt = enemyList.iterator();
-                while(enemysIt.hasNext()) {
-                    EnemyShip enemys = enemysIt.next();
-                    if (playership.intersects(enemys))
-                    {
-                        enemysIt.remove();
-                        enemyList.remove(enemys);
 
+                for (EnemyShip enemy : enemyList) {
+                    if (playership.intersects(enemy)) {
+                        enemyList.remove(enemy);
                     }
 
                     for (Projectile projectile : myProjectileList) {
-                        if (projectile.intersects(enemys)) {
-                            enemysIt.remove();
-                            enemyList.remove(enemys);
+                        if (projectile.intersects(enemy)) {
+                            enemyList.remove(enemy);
                             myProjectileList.remove(projectile);
                         }
                     }
 
-                    for (Projectile projectile : foeProjectileList) {
-                        if (projectile.intersects(playership)) {
-                            foeProjectileList.remove(projectile);
-                            // PLayership tot now
-                        }
-                    }
-                }
+                    enemy.update(elapsedTime);
+                    enemy.setTimeSinceLastShot(enemy.getTimeSinceLastShot() + elapsedTime);
 
-                for (EnemyShip enemys : enemyList) {
-                    enemys.update(elapsedTime);
-                    enemys.setTimeSinceLastShot(enemys.getTimeSinceLastShot() + elapsedTime);
-                    if (enemys.getTimeSinceLastShot() > 2) {
+                    if (enemy.getTimeSinceLastShot() > 2) {
                         Projectile bullet = new Projectile("spaceshooter/PNG/Lasers/laserRed08.png");
                         bullet.setVelocity(-400, 0);
-                        bullet.setPosition(enemys.getPosition_x(), enemys.getPosition_y() + 43);
+                        bullet.setPosition(enemy.getPosition_x(), enemy.getPosition_y() + 43);
                         foeProjectileList.add(bullet);
-                        enemys.setTimeSinceLastShot(0);
+                        enemy.setTimeSinceLastShot(0);
                     }
 
-                    if (enemys.getPosition_x() <= -85) {
-                        enemysIt.remove();
-                        enemyList.remove(enemys);
+                    if (enemy.getPosition_x() <= -85) {
+                        enemyList.remove(enemy);
                     }
 
-                    enemys.render(gc);
+                    enemy.render(gc);
                 }
+
+
+                for (Projectile projectile : foeProjectileList) {
+                    if (projectile.intersects(playership)) {
+                        foeProjectileList.remove(projectile);
+                        // Playership tot now
+                    }
+                }
+
+                wave.setWaveList(enemyList);
+
             }
 
         }.start();
