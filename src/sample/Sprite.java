@@ -22,6 +22,17 @@ public class Sprite {
     private double velocity_y;
     private double width;
     private double height;
+    private boolean isFriendly = true;
+
+    public void setFriendly(boolean friendly) {
+        this.isFriendly = friendly;
+    }
+    public boolean getFriendly() {
+        return this.isFriendly;
+    }
+    public double getHeight() {
+        return height;
+    }
 
     public Sprite(){
         position_x = 0;
@@ -49,6 +60,10 @@ public class Sprite {
     public void setVelocity(double x, double y){
         velocity_x = x;
         velocity_y = y;
+    }
+
+    public double getVelocity_x() {
+        return velocity_x;
     }
 
     public void addVelocity(double x, double y){
