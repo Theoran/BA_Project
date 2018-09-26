@@ -119,9 +119,10 @@ public class Main extends Application {
         Ship playership = new Ship();
         playership.setImage("sample/playerShip1_orange.png");
         playership.setPosition(50, 370);
+        playership.setShotImage("sample/laserBlue06.png");
         playership.setShotVelocity(450);
         playership.setShotDmg(100);
-        playership.setFriendly(true);
+        playership.setFriendly();
         shipList.add(playership);
 
         // Initialisierung der EnemyFactory
@@ -181,19 +182,20 @@ public class Main extends Application {
                 if (userinput.contains("LEFT")) playership.addVelocity(-400, 0);
                 if (userinput.contains("RIGHT")) playership.addVelocity(400, 0);
 
-                if (userinput.contains("SPACE") && playership.getTimeSinceLastShot() >= 0.5){
+                // if (userinput.contains("SPACE") && playership.getTimeSinceLastShot() >= 0.3)
+                if (playership.getTimeSinceLastShot() >= 0.3){
                     Projectile activeProjectile = playership.shoot();
+                    activeProjectile.setFriendly();
                     projectileList.add(activeProjectile);
                     playership.resetTimeSinceLastShot();
                 }
 
                 // Random-Spawn per Factory
                 if (timeSinceSpawn >= 1) {
-                    EnemyShip enemy = factory.spawnEnemy(overallTime);
+                    Ship enemy = factory.spawnEnemy(overallTime);
                     shipList.add(enemy);
                     timeSinceSpawn = 0;
                 }
-
 
                 // wave.setWaveList(enemyList);
 

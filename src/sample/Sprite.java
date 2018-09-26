@@ -22,10 +22,10 @@ public class Sprite {
     private double velocity_y;
     private double width;
     private double height;
-    private boolean isFriendly = true;
+    private boolean isFriendly = false;
 
-    public void setFriendly(boolean friendly) {
-        this.isFriendly = friendly;
+    public void setFriendly() {
+        this.isFriendly = true;
     }
     public boolean getFriendly() {
         return this.isFriendly;

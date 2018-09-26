@@ -2,61 +2,63 @@ package sample;
 
 import javafx.scene.image.Image;
 
-public class Ship extends Sprite {
+public class Ship extends Sprite implements IShip {
 
-    private double health = 100;
-    private Image shotImage = new Image("sample/laserBlue06.png");
-    private double shotVelocity = 450;
-    private double timeSinceLastShot = 0;
-    private double shotDmg = 40;
+    private double health;
+    private Image shotImage;
+    private double shotVelocity;
+    private double timeSinceLastShot;
+    private double shotDmg;
 
     public double getHealth() {
-        return health;
+        return this.health;
     }
 
-    public Image getShotImage() {
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    public void setShotImage(String shotImage) {
+        Image img = new Image(shotImage);
+        this.shotImage = img;
+    }
+
+    public Image getShotImage(){
         return this.shotImage;
     }
 
-    public void setShotImage(Image shotImage) {
-        this.shotImage = shotImage;
+    public double getShotVelocity(){
+        return this.shotVelocity;
     }
 
-    public double getShotVelocity() {
-        return shotVelocity;
-    }
-
-    public void setShotVelocity(double shotVelocity) {
+    public void setShotVelocity(double shotVelocity){
         this.shotVelocity = shotVelocity;
     }
 
-    public Projectile shoot() {
-        Projectile shot = new Projectile("sample/laserBlue06.png", this.shotDmg, this.getPosition_x(), this.getPosition_y() + 0.5*this.getHeight() ,this.getShotVelocity());
-        shot.setFriendly(this.getFriendly());
-        return shot;
+    public double getTimeSinceLastShot(){
+        return this.timeSinceLastShot;
     }
-
-    public double getTimeSinceLastShot() {
-        return timeSinceLastShot;
-    }
-
-    public void resetTimeSinceLastShot() {
+    public void resetTimeSinceLastShot(){
         this.timeSinceLastShot = 0;
     }
-
-    public void addToTimeSinceLastShot(double time) {
+    public void addToTimeSinceLastShot(double time){
         this.timeSinceLastShot += time;
     }
 
-    public double getShotDmg() {
-        return shotDmg;
+    public double getShotDmg(){
+        return this.shotDmg;
     }
 
-    public void setShotDmg(double dmg) {
-        this.shotDmg = dmg;
+    public void setShotDmg(double dmg){
+     this.shotDmg = shotDmg;
     }
 
-    public void getHit(Projectile projectile) {
+    public void getHit(Projectile projectile){
         this.health = this.health - projectile.getDmg();
+    }
+
+    public Projectile shoot(){
+        Projectile projectile = new Projectile(this.shotImage, this.shotDmg, this.getPosition_x(), this.getPosition_y() + 0.5*this.getHeight(), this.shotVelocity);
+        return projectile;
     }
 }
