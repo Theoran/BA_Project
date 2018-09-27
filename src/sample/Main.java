@@ -122,6 +122,7 @@ public class Main extends Application {
         playership.setShotImage("sample/laserBlue06.png");
         playership.setShotVelocity(450);
         playership.setShotDmg(100);
+        System.out.println(playership.getShotDmg());
         playership.setFriendly();
         shipList.add(playership);
 
@@ -157,14 +158,18 @@ public class Main extends Application {
 
                 for (int i=0;i<shipList.size();i++) {
                     Ship ship = shipList.get(i);
+
                     for (int j=0; j<projectileList.size();j++) {
                         Projectile projectile = projectileList.get(j);
                         if (ship.intersects(projectile) && (ship.getFriendly() != projectile.getFriendly())) {
-                            ship.getHit(projectile);
-                            if (ship.getHealth() <= 0) shipList.remove(ship);
+                            ship.takeDamage(projectile.getDmg());
+                            if (ship.getHealth() <= 0) {
+                                shipList.remove(ship);
+                            }
                             projectileList.remove(projectile);
                         }
                     }
+
                     ship.update(elapsedTime);
                     ship.render(gc);
                     ship.addToTimeSinceLastShot(elapsedTime);
@@ -182,10 +187,10 @@ public class Main extends Application {
                 if (userinput.contains("LEFT")) playership.addVelocity(-400, 0);
                 if (userinput.contains("RIGHT")) playership.addVelocity(400, 0);
 
-                // if (userinput.contains("SPACE") && playership.getTimeSinceLastShot() >= 0.3)
-                if (playership.getTimeSinceLastShot() >= 0.3){
+                if (userinput.contains("SPACE") && playership.getTimeSinceLastShot() >= 0.3) {
                     Projectile activeProjectile = playership.shoot();
                     activeProjectile.setFriendly();
+                    activeProjectile.setDmg(10000);
                     projectileList.add(activeProjectile);
                     playership.resetTimeSinceLastShot();
                 }

@@ -22,6 +22,6 @@ public interface IShip {
 
     Projectile shoot();
 
-    void getHit(Projectile projectile);
+    void takeDamage(double dmg);
 
 }
