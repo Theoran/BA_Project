@@ -20,6 +20,11 @@ public class Sprite {
     private double position_y;
     private double velocity_x;
     private double velocity_y;
+
+    public double getWidth() {
+        return width;
+    }
+
     private double width;
     private double height;
     private boolean isFriendly = false;

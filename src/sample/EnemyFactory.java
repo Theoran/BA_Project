@@ -6,9 +6,9 @@ public class EnemyFactory {
         return floor <= x && x <= ceiling;
     }
 
-    public Ship spawnEnemy(double time) {
+    public Enemy spawnEnemy(double time) {
 
-        Ship enemy;
+        Enemy enemy;
 
         // Zufallszahl zum Bestimmen des GegnerTypen generieren
         double decider = Math.random();
@@ -30,7 +30,7 @@ public class EnemyFactory {
         return enemy;
     }
 
-    class EnemyType1 extends Ship {
+    class EnemyType1 extends Enemy {
         public EnemyType1 () {
             this.setImage("sample/enemyBlack1.png");
             this.setHealth(100);
@@ -38,7 +38,7 @@ public class EnemyFactory {
         }
     }
 
-    class EnemyType2 extends Ship {
+    class EnemyType2 extends Enemy {
         public EnemyType2 () {
             this.setImage("spaceshooter/PNG/Enemies/enemyBlue3.png");
             this.setHealth(150);
@@ -46,7 +46,7 @@ public class EnemyFactory {
         }
     }
 
-    class EnemyType3 extends Ship {
+    class EnemyType3 extends Enemy {
         public EnemyType3() {
             this.setImage("spaceshooter/PNG/Enemies/enemyRed5.png");
             this.setHealth(200);
