@@ -34,7 +34,7 @@ public class EnemyFactory {
         public EnemyType1 () {
             this.setImage("sample/enemyBlack1.png");
             this.setHealth(100);
-            this.setVelocity(-200, 0);
+            this.setVelocity(-350, 0);
         }
     }
 
@@ -42,7 +42,7 @@ public class EnemyFactory {
         public EnemyType2 () {
             this.setImage("spaceshooter/PNG/Enemies/enemyBlue3.png");
             this.setHealth(150);
-            this.setVelocity(-220, 0);
+            this.setVelocity(-370, 0);
         }
     }
 
@@ -51,7 +51,7 @@ public class EnemyFactory {
             this.setImage("spaceshooter/PNG/Enemies/enemyRed5.png");
             this.setHealth(200);
             this.setVelocity(-200,0);
-            this.setShotVelocity(-300);
+            this.setShotVelocity(-500);
             this.setShotDmg(30);
         }
     }

@@ -17,14 +17,14 @@ import java.util.ArrayList;
 public class GameScene {
 
     //Canvas + Graphicscontext
-    private static Canvas gameCanvas = new Canvas(1280, 720);
+    private static Canvas gameCanvas = new Canvas(1280, 600);
     private static GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
     //Layout des Game Menues
     private static Group root = new Group();
 
     //Scene des Game Menues wird initialisiert
-    private static Scene game = new Scene(root, 1280, 720);
+    private static Scene game = new Scene(root, 1280, 600);
 
     //AudioPlayer
     private static AudioPlayer sound = AudioPlayer.player;
@@ -156,12 +156,12 @@ public class GameScene {
                 */
 
             playership.setVelocity(0, 0);
-            if (userInput.contains("UP")) playership.addVelocity(0, -400);
-            if (userInput.contains("DOWN")) playership.addVelocity(0, 400);
+            if (userInput.contains("UP")) playership.addVelocity(0, -500);
+            if (userInput.contains("DOWN")) playership.addVelocity(0, 500);
             if (userInput.contains("LEFT")) playership.addVelocity(-400, 0);
             if (userInput.contains("RIGHT")) playership.addVelocity(400, 0);
 
-            if (userInput.contains("SPACE") && playership.getTimeSinceLastShot() >= 0.3) {
+            if (userInput.contains("SPACE") && playership.getTimeSinceLastShot() >= 0.1) {
                 Projectile activeProjectile = playership.shoot();
                 activeProjectile.setDmg(playership.getShotDmg());
                 myProjectileList.add(activeProjectile);
@@ -169,7 +169,7 @@ public class GameScene {
             }
 
             // Random-Spawn per Factory
-            if (timeSinceSpawn >= 1) {
+            if (timeSinceSpawn >= 0.6) {
                 Enemy enemy = factory.spawnEnemy(overallTime);
                 enemyList.add(enemy);
                 timeSinceSpawn = 0;
@@ -180,12 +180,16 @@ public class GameScene {
 
             for (int i=0; i<myProjectileList.size(); i++) {
                 Projectile p = myProjectileList.get(i);
+                if (p.getPosition_x() > 1280) {
+                    myProjectileList.remove(p);
+                    continue;
+                }
                 p.update(elapsedTime);
                 p.render(gc);
-                System.out.println(p);
             }
 
         } // ENDE HANDLE
-    }; // ENDE DEFINITION AnimationTimer
+
+    }; // ENDE DEFINITION GameLoop
 
 } // ENDE GameScene

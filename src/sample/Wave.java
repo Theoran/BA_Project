@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Wave {
 
-    private ArrayList<EnemyShip> waveList;
+    private ArrayList<Enemy> waveList;
     private int enemiesToSpawn;
     private int enemiesSpawned;
     private String image;
@@ -22,11 +22,11 @@ public class Wave {
     }
 
     //waveList setter
-    public void setWaveList(ArrayList<EnemyShip> waveList) {
+    public void setWaveList(ArrayList<Enemy> waveList) {
         this.waveList = waveList;
     }
     //waveList getter
-    public ArrayList<EnemyShip> getWaveList() {
+    public ArrayList<Enemy> getWaveList() {
         return waveList;
     }
 
@@ -37,7 +37,7 @@ public class Wave {
         }
 
         if(needMoreEnemies && Math.ceil(60 * Math.random()) == 1){
-            EnemyShip enemy = new EnemyShip();
+            Enemy enemy = new Enemy();
             spawnEnemy(enemy);
             enemiesSpawned++;
         }
@@ -45,7 +45,7 @@ public class Wave {
         return true;
     }
 
-    private void spawnEnemy(EnemyShip enemy){
+    private void spawnEnemy(Enemy enemy){
         double rnd = Math.random()*620;
         boolean rndIsAcceptable = false;
 

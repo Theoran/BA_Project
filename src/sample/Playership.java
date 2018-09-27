@@ -2,7 +2,7 @@ package sample;
 
 import javafx.scene.image.Image;
 
-public class Playership extends Ship implements IShip {
+public class Playership extends Sprite implements IShip {
 
     private double health = 100;
     private Image shotImage;
@@ -15,8 +15,8 @@ public class Playership extends Ship implements IShip {
         this.setImage("sample/playerShip1_orange.png");
         this.setPosition(50, 360);
         this.setShotImage("sample/laserBlue06.png");
-        this.setShotDmg(100);
-        this.setShotVelocity(450);
+        this.setShotDmg(20);
+        this.setShotVelocity(800);
     }
 
     @Override
