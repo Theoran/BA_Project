@@ -10,6 +10,7 @@ public class Ship extends Sprite implements IShip {
     private double timeSinceLastShot;
     private double shotDmg;
 
+
     public double getHealth() {
         return this.health;
     }
