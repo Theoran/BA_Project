@@ -50,11 +50,11 @@ public class Ship extends Sprite implements IShip {
     }
 
     public void setShotDmg(double dmg){
-     this.shotDmg = shotDmg;
+     this.shotDmg = dmg;
     }
 
-    public void getHit(Projectile projectile){
-        this.health = this.health - projectile.getDmg();
+    public void takeDamage(double dmg){
+        this.health = this.health - dmg;
     }
 
     public Projectile shoot(){

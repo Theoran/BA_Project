@@ -16,4 +16,8 @@ public class Projectile extends Sprite {
     public double getDmg() {
         return this.dmg;
     }
+
+    public void setDmg(double dmg) {
+        this.dmg = dmg;
+    }
 }
