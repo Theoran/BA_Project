@@ -26,12 +26,6 @@ public class GameScene {
     //Scene des Game Menues wird initialisiert
     private static Scene game = new Scene(root, 1280, 600);
 
-    //AudioPlayer
-    private static AudioPlayer sound = AudioPlayer.player;
-    private static AudioStream BGM;
-    private static AudioData MD;
-    private static ContinuousAudioDataStream musicLoop = null;
-
     // Hintergrund
     private static Image bgImage = new Image("sample/Space.jpg");
 
@@ -69,7 +63,6 @@ public class GameScene {
         // AUDIO
         */
 
-
         game.setOnKeyPressed(
                 e -> {
                     String code = e.getCode().toString();
@@ -86,14 +79,13 @@ public class GameScene {
 
         stage.setScene(game);
         stage.centerOnScreen();
-        GameLoop.start();
     }
 
     static public void gameOver() {
         System.exit(0);
     }
 
-    private static AnimationTimer GameLoop = new AnimationTimer(){
+    public static AnimationTimer GameLoop = new AnimationTimer(){
         long lastNanoTime = (System.nanoTime());
         double elapsedTime;
         double overallTime = 0;
@@ -166,6 +158,7 @@ public class GameScene {
                 activeProjectile.setDmg(playership.getShotDmg());
                 myProjectileList.add(activeProjectile);
                 playership.resetTimeSinceLastShot();
+                Sound.sound(Sound.playerShipLaser);
             }
 
             // Random-Spawn per Factory
@@ -188,8 +181,8 @@ public class GameScene {
                 p.render(gc);
             }
 
-        } // ENDE HANDLE
+        } // END HANDLE
 
-    }; // ENDE DEFINITION GameLoop
+    }; // END DEFINITION GameLoop
 
-} // ENDE GameScene
+} // END GameScene

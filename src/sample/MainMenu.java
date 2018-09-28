@@ -19,6 +19,8 @@ public class MainMenu {
 
 
 
+
+
     public static void initialize(Stage stage) {
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.getChildren().addAll(startButton, exitButton);
@@ -26,6 +28,8 @@ public class MainMenu {
         //Eventhandler für Start-Button
         startButton.setOnAction(e -> {
             GameScene.initialize(stage);
+            GameScene.GameLoop.start();
+            Sound.music(Sound.musicList[(int) Math.round(Math.random())]);
         });
 
         //Eventhandler für Exit-Button
