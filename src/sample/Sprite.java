@@ -57,9 +57,17 @@ public class Sprite {
         setImage(i);
     }
 
-    public void setPosition(double x, double y){
-        position_x = x;
-        position_y = y;
+    public void setPosition(double position_x, double position_y) {
+        this.position_x = position_x;
+        this.position_y = position_y;
+    }
+
+    public void setPositionX(double x){
+        this.position_x = x;
+    }
+
+    public void setPositionY(double y){
+        this.position_y = y;
     }
 
     public void setVelocity(double x, double y){
@@ -69,6 +77,10 @@ public class Sprite {
 
     public double getVelocity_x() {
         return velocity_x;
+    }
+
+    public double getVelocity_y() {
+        return this.velocity_y;
     }
 
     public void addVelocity(double x, double y){

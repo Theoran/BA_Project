@@ -43,6 +43,9 @@ public class GameScene {
     // ArrayList Gegner
     private static ArrayList<Enemy>enemyList = new ArrayList<>();
 
+    // ArrayList Asteroiden
+    private static ArrayList<Asteroid> asteroidList = new ArrayList<>();
+
     // ArrayList Player Inputs
     private static ArrayList<String> userInput = new ArrayList<>();
 
@@ -85,7 +88,6 @@ public class GameScene {
 
     private void GameOver() {
         GameOverMenu.initialize(this.stage);
-
     }
 
     private AnimationTimer GameLoop = new AnimationTimer(){
@@ -93,6 +95,7 @@ public class GameScene {
         double elapsedTime;
         double overallTime = 0;
         double timeSinceSpawn = 0;
+        double timeSinceAsteroid = 0;
 
         public void handle(long currentNanoTime)
         {
@@ -100,6 +103,7 @@ public class GameScene {
             lastNanoTime = currentNanoTime;
             overallTime += elapsedTime;
             timeSinceSpawn += elapsedTime;
+            timeSinceAsteroid += elapsedTime;
             playership.addToTimeSinceLastShot(elapsedTime);
 
             String highscoreText = "Highscore: " + 100 * highscore;
@@ -200,6 +204,29 @@ public class GameScene {
                 Enemy enemy = factory.spawnEnemy(overallTime);
                 enemyList.add(enemy);
                 timeSinceSpawn = 0;
+            }
+
+            // asteroiden Spawn
+            if (timeSinceAsteroid >= 7) {
+                Asteroid asteroid = new Asteroid();
+                boolean intersectsEnemy = true;
+                while (intersectsEnemy) {
+                    asteroid.setPosition(1300, Math.random()* 500);
+                    for (int i=0; i<enemyList.size(); i++) {
+                        if (asteroid.intersects(enemyList.get(i))) break;
+                    }
+                    intersectsEnemy = false;
+                }
+                asteroidList.add(asteroid);
+                timeSinceAsteroid = 0;
+            }
+
+            for (int i=0; i<asteroidList.size(); i++) {
+                Asteroid a = asteroidList.get(i);
+                if (a.intersects(playership)) GameOver();
+                else if (a.getPosition_x() <= -10) asteroidList.remove(a);
+                a.update(elapsedTime);
+                a.render(gc);
             }
 
             playership.update(elapsedTime);

@@ -87,4 +87,18 @@ public class Playership extends Sprite implements IShip {
     public void takeDamage(double dmg) {
         this.health -= dmg;
     }
+
+    @Override
+    public void update(double time){
+
+        double newPosX = this.getPosition_x() + this.getVelocity_x()*time;
+        double newPosY = this.getPosition_y() + this.getVelocity_y()*time;
+
+        if (newPosX <= 0) this.setPositionX(0);
+        else this.setPositionX(newPosX);
+
+        if (newPosY <= -40) this.setPositionY(600);
+        else if (newPosY >= 600) this.setPositionY(0);
+        else this.setPositionY(newPosY);
+    }
 }
