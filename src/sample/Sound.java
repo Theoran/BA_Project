@@ -8,7 +8,7 @@ import java.io.File;
 
 public class Sound {
 
-    public static String musicList[] = {"C:\\Users\\arthur.staehr\\IdeaProjects\\Project_BA\\src\\Sound\\Music\\Shirobon.wav", "C:\\Users\\arthur.staehr\\IdeaProjects\\Project_BA\\src\\Sound\\Music\\Ultima_Weapon.wav"};
+    public static String musicList[] = {"src/Sound/Music/Shirobon.wav", "src/Sound/Music/Ultima_Weapon.wav"};
 
     public static synchronized void music(String musicFile, double volume) {
 
@@ -40,8 +40,12 @@ public class Sound {
     }
 
 
-    public static String playerShipLaser = "C:\\Users\\arthur.staehr\\IdeaProjects\\Project_BA\\src\\Sound\\Sounds\\laser2.wav";
-    public static String shipdestoryed = "C:\\Users\\arthur.staehr\\IdeaProjects\\Project_BA\\src\\Sound\\Sounds\\highDown.wav";
+    public static String playerShipLaser = "src/Sound/Sounds/laser2.wav";
+    public static String enemyShipLaser = "src/Sound/Sounds/laser8.wav";
+    public static String enemyShipDestroyed = "src/Sound/Sounds/highDown.wav";
+    public static String playerShipDestroyed = "src/Sound/Sounds/zapThreeToneDown.wav";
+    public static String playerShipHit = "src/Sound/Sounds/twoTone1.wav";
+
 
     public static synchronized void sound(String soundFile, double volume) {
 

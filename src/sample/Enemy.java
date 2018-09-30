@@ -6,9 +6,9 @@ public class Enemy extends Sprite implements IShip {
 
     private double health;
     private Image shotImage;
-    private double shotVelocity;
+    private double shotVelocity = -200;
     private double timeSinceLastShot;
-    private double shotDmg;
+    private double shotDmg = 10;
     private double projectileOffsetX = this.getWidth()*0.5 + 10;
 
 
@@ -73,7 +73,7 @@ public class Enemy extends Sprite implements IShip {
 
     @Override
     public Projectile shoot() {
-        return new Projectile(this.shotImage, this.shotDmg, this.getPosition_x() - this.projectileOffsetX, this.getPosition_y(), this.getVelocity_x());
+        return new Projectile(this.shotImage, this.shotDmg, this.getPosition_x() - 10, this.getPosition_y() + this.getHeight()*0.5-this.shotImage.getHeight()*0.5, this.getShotVelocity());
     }
 
     @Override

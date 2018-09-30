@@ -43,7 +43,9 @@ public class GameScene {
     // Instanz zum Gegner Spawn
     private static EnemyFactory factory = new EnemyFactory();
 
-    int waveCounter = 0;
+    //Integer für Highscore
+    Highscore highscore = new Highscore(0);
+
 
     public static void initialize(Stage stage) {
         root.getChildren().addAll(gameCanvas);
@@ -86,11 +88,17 @@ public class GameScene {
 
             gc.drawImage(bgImage, 0, 0);
 
+            String scrore = "Highscore ";
+
+            // SCHLEIFE GEGNER PROJEKTILE
             for (int i=0; i<enemyProjectileList.size(); i++) {
                 Projectile p = enemyProjectileList.get(i);
                 if (playership.intersects(p)) {
                     playership.takeDamage(p.getDmg());
-                    if (playership.getHealth() <= 0) gameOver();
+                    if (playership.getHealth() <= 0) {
+                        Sound.sound(Sound.playerShipDestroyed, 0.25);
+                        gameOver();
+                    }
                     enemyProjectileList.remove(p);
                 }
                 if (p.getPosition_x() <= 0 - p.getWidth()) {
@@ -101,27 +109,43 @@ public class GameScene {
                 p.render(gc);
             }
 
+            // SCHLEIFE GEGNER
             for (int i=0; i<enemyList.size(); i++) {
                 Enemy e = enemyList.get(i);
 
+                e.addToTimeSinceLastShot(elapsedTime);
+
                 if (playership.intersects(e)) {
+                    Sound.sound(Sound.playerShipDestroyed, 0.25);
                     gameOver();
                 }
 
                 if (e.getPosition_x() <= 0 - e.getWidth()) enemyList.remove(e);
 
+                // UNTERSCHLEIFE: FUER JEDEN GEGENR DURCH SPIELER PROJEKTILE SCHLEIFEN UND ABFRAGEN OB TREFFER
                 for (int j=0; j<myProjectileList.size(); j++) {
                     Projectile myP = myProjectileList.get(j);
                     if (e.intersects(myP)) {
                         e.takeDamage(myP.getDmg());
-                        if (e.getHealth() <= 0) enemyList.remove(e);
+                        if (e.getHealth() <= 0) {
+                            enemyList.remove(e);
+                            Sound.sound(Sound.enemyShipDestroyed, 0.4);
+
+                        }
                         myProjectileList.remove(myP);
-                        Sound.sound(Sound.shipdestoryed, 0.4);
                     }
+                }
+
+                // WENN GENUG ZEIT VERGANGEN DANN SCHIESSEN
+                if (e.getTimeSinceLastShot() >= 4){
+                    enemyProjectileList.add(e.shoot());
+                    Sound.sound(Sound.enemyShipLaser, 0.25);
+                    e.resetTimeSinceLastShot();
                 }
 
                 e.update(elapsedTime);
                 e.render(gc);
+                System.out.println(e);
             }
 
                 /*
@@ -148,7 +172,7 @@ public class GameScene {
             }
 
             // Random-Spawn per Factory
-            if (timeSinceSpawn >= 0.6) {
+            if (timeSinceSpawn >= 1.1) {
                 Enemy enemy = factory.spawnEnemy(overallTime);
                 enemyList.add(enemy);
                 timeSinceSpawn = 0;
