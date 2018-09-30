@@ -25,8 +25,10 @@ public class MainMenu {
 
         // Eventhandler für Start-Button
         startButton.setOnAction(e -> {
-            GameScene.initialize(stage);
-            GameScene.GameLoop.start();
+            GameScene game = new GameScene();
+            game.setStage(stage);
+            game.initialize(stage);
+
             Sound.music(Sound.musicList[(int) Math.round(Math.random())], 0.1);
         });
 

@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -15,6 +18,9 @@ public class GameScene {
     //Canvas + Graphicscontext
     private static Canvas gameCanvas = new Canvas(1280, 600);
     private static GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+
+    // Stage-Variable für späteres Aufrufen in der handle-Funnktion der GameLoop
+    private static Stage stage;
 
     //Layout des Game Menues
     private static Group root = new Group();
@@ -44,10 +50,18 @@ public class GameScene {
     private static EnemyFactory factory = new EnemyFactory();
 
     //Integer für Highscore
-    Highscore highscore = new Highscore(0);
+    private static int highscore = 0;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return this.stage;
+    }
 
 
-    public static void initialize(Stage stage) {
+    public void initialize(Stage stage) {
         root.getChildren().addAll(gameCanvas);
 
         game.setOnKeyPressed(
@@ -66,13 +80,15 @@ public class GameScene {
 
         stage.setScene(game);
         stage.centerOnScreen();
+        this.GameLoop.start();
     }
 
-    static public void gameOver() {
-        System.exit(0);
+    private void GameOver() {
+        GameOverMenu.initialize(this.stage);
+
     }
 
-    public static AnimationTimer GameLoop = new AnimationTimer(){
+    private AnimationTimer GameLoop = new AnimationTimer(){
         long lastNanoTime = (System.nanoTime());
         double elapsedTime;
         double overallTime = 0;
@@ -86,18 +102,24 @@ public class GameScene {
             timeSinceSpawn += elapsedTime;
             playership.addToTimeSinceLastShot(elapsedTime);
 
+            String highscoreText = "Highscore: " + 100 * highscore;
+
             gc.drawImage(bgImage, 0, 0);
+            gc.fillText(highscoreText, 20, 35);
+            gc.setFill(Color.WHITE);
+            Font highScoreFont = Font.font("Arial", FontWeight.BOLD, 25);
+            gc.setFont(highScoreFont);
 
-            String scrore = "Highscore ";
 
-            // SCHLEIFE GEGNER PROJEKTILE
+            // Schleife durch Gegner-Projektile
             for (int i=0; i<enemyProjectileList.size(); i++) {
                 Projectile p = enemyProjectileList.get(i);
                 if (playership.intersects(p)) {
                     playership.takeDamage(p.getDmg());
                     if (playership.getHealth() <= 0) {
                         Sound.sound(Sound.playerShipDestroyed, 0.25);
-                        gameOver();
+                        GameLoop.stop();
+                        GameOver();
                     }
                     enemyProjectileList.remove(p);
                 }
@@ -109,20 +131,22 @@ public class GameScene {
                 p.render(gc);
             }
 
-            // SCHLEIFE GEGNER
+            // Schleife durch Gegner
             for (int i=0; i<enemyList.size(); i++) {
                 Enemy e = enemyList.get(i);
 
                 e.addToTimeSinceLastShot(elapsedTime);
 
+            // Sound bei Zerstörung und GameOver-Screen
                 if (playership.intersects(e)) {
                     Sound.sound(Sound.playerShipDestroyed, 0.25);
-                    gameOver();
+                    GameLoop.stop();
+                    GameOver();
                 }
 
                 if (e.getPosition_x() <= 0 - e.getWidth()) enemyList.remove(e);
 
-                // UNTERSCHLEIFE: FUER JEDEN GEGENR DURCH SPIELER PROJEKTILE SCHLEIFEN UND ABFRAGEN OB TREFFER
+                // Unterschleife: Für jeden Gegner durch Spieler-Projektil-Schleife abfragen, ob Treffer
                 for (int j=0; j<myProjectileList.size(); j++) {
                     Projectile myP = myProjectileList.get(j);
                     if (e.intersects(myP)) {
@@ -130,13 +154,14 @@ public class GameScene {
                         if (e.getHealth() <= 0) {
                             enemyList.remove(e);
                             Sound.sound(Sound.enemyShipDestroyed, 0.4);
+                            highscore++;
 
                         }
                         myProjectileList.remove(myP);
                     }
                 }
 
-                // WENN GENUG ZEIT VERGANGEN DANN SCHIESSEN
+                // Wenn genug Zeit vergangen ist, dann schießen
                 if (e.getTimeSinceLastShot() >= 4){
                     enemyProjectileList.add(e.shoot());
                     Sound.sound(Sound.enemyShipLaser, 0.25);
@@ -145,7 +170,6 @@ public class GameScene {
 
                 e.update(elapsedTime);
                 e.render(gc);
-                System.out.println(e);
             }
 
                 /*
@@ -191,8 +215,8 @@ public class GameScene {
                 p.render(gc);
             }
 
-        } // END HANDLE
+        } // Ende Handle
 
-    }; // END DEFINITION GameLoop
+    }; // Ende Definition GameLoop
 
-} // END GameScene
+} // Ende GameScene
