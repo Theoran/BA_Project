@@ -7,11 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
-import java.io.FileInputStream;
+
 import java.util.ArrayList;
 
 public class GameScene {
@@ -27,7 +23,7 @@ public class GameScene {
     private static Scene game = new Scene(root, 1280, 600);
 
     // Hintergrund
-    private static Image bgImage = new Image("sample/Space.jpg");
+    private static Image bgImage = new Image("Pictures/Background/Space.jpg");
 
     // Spielfigur erstellen
     private static Playership playership = new Playership();
@@ -51,17 +47,6 @@ public class GameScene {
 
     public static void initialize(Stage stage) {
         root.getChildren().addAll(gameCanvas);
-
-        /* not working
-        // AUDIO
-        try {
-            BGM = new AudioStream(new FileInputStream("sample/Ultima_Weapon.mp3"));
-            MD = BGM.getData();
-            musicLoop = new ContinuousAudioDataStream(MD);
-        } catch(Exception e1){}
-        sound.start();
-        // AUDIO
-        */
 
         game.setOnKeyPressed(
                 e -> {
@@ -131,6 +116,7 @@ public class GameScene {
                         e.takeDamage(myP.getDmg());
                         if (e.getHealth() <= 0) enemyList.remove(e);
                         myProjectileList.remove(myP);
+                        Sound.sound(Sound.shipdestoryed, 0.4);
                     }
                 }
 
@@ -158,7 +144,7 @@ public class GameScene {
                 activeProjectile.setDmg(playership.getShotDmg());
                 myProjectileList.add(activeProjectile);
                 playership.resetTimeSinceLastShot();
-                Sound.sound(Sound.playerShipLaser);
+                Sound.sound(Sound.playerShipLaser, 0.2);
             }
 
             // Random-Spawn per Factory

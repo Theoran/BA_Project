@@ -12,9 +12,9 @@ public class Playership extends Sprite implements IShip {
     private double projectileOffsetX = this.getWidth()*0.5 + 10;
 
     public Playership() {
-        this.setImage("sample/playerShip1_orange.png");
+        this.setImage("Pictures/playerShip1_orange.png");
         this.setPosition(50, 360);
-        this.setShotImage("sample/laserBlue06.png");
+        this.setShotImage("Pictures/Effects/Laser/laserBlue06.png");
         this.setShotDmg(20);
         this.setShotVelocity(800);
     }

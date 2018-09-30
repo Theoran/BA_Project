@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 
 public class MainMenu {
 
-    //Layout des Main Menues inklusive Zuweisung und Positionierung der Buttons
+    // Layout des Main Menues inklusive Zuweisung und Positionierung der Buttons
     private static VBox menuLayout = new VBox(50);
 
-    //Buttons zum Start und Verlassen des Spiels
+    // Buttons zum Start und Verlassen des Spiels
     private static Button startButton = new Button("Start Game");
     private static Button exitButton = new Button("Exit");
 
@@ -19,20 +19,18 @@ public class MainMenu {
 
 
 
-
-
     public static void initialize(Stage stage) {
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.getChildren().addAll(startButton, exitButton);
 
-        //Eventhandler für Start-Button
+        // Eventhandler für Start-Button
         startButton.setOnAction(e -> {
             GameScene.initialize(stage);
             GameScene.GameLoop.start();
-            Sound.music(Sound.musicList[(int) Math.round(Math.random())]);
+            Sound.music(Sound.musicList[(int) Math.round(Math.random())], 0.1);
         });
 
-        //Eventhandler für Exit-Button
+        // Eventhandler für Exit-Button
         exitButton.setOnAction(e -> {
             stage.close();
             System.out.println("Spiel beendet...");
