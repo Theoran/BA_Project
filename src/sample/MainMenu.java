@@ -28,8 +28,6 @@ public class MainMenu {
             GameScene game = new GameScene();
             game.setStage(stage);
             game.initialize(stage);
-
-            Sound.music(Sound.musicList[(int) Math.round(Math.random())], 0.1);
         });
 
         // Eventhandler für Exit-Button

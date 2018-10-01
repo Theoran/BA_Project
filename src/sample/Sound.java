@@ -8,6 +8,12 @@ import java.io.File;
 
 public class Sound {
 
+    private static Clip musicClip;
+
+    public static Clip getMusicClip(){
+        return musicClip;
+    }
+
     public static String musicList[] = {"src/Sound/Music/Shirobon.wav", "src/Sound/Music/Ultima_Weapon.wav"};
 
     public static synchronized void music(String musicFile, double volume) {
@@ -16,12 +22,11 @@ public class Sound {
 
         try {
 
-            Clip musicClip = AudioSystem.getClip();
+            musicClip = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(titleName));
             musicClip.open(inputStream);
             setMusicVolumen(volume, musicClip);
             musicClip.loop(musicClip.LOOP_CONTINUOUSLY);
-
         } catch (Exception e) {
 
             e.printStackTrace();
