@@ -46,6 +46,9 @@ public class GameScene {
     // ArrayList Asteroiden
     private ArrayList<Asteroid> asteroidList = new ArrayList<>();
 
+    // ArrayList Asteroiden
+    private static ArrayList<Asteroid> asteroidList = new ArrayList<>();
+
     // ArrayList Player Inputs
     private ArrayList<String> userInput = new ArrayList<>();
 
@@ -90,9 +93,11 @@ public class GameScene {
     }
 
     private void GameOver() {
+
         Sound.getMusicClip().close();
         GameOverMenu gameOverMenu = new GameOverMenu();
         gameOverMenu.initialize(this.stage);
+
     }
 
     private AnimationTimer GameLoop = new AnimationTimer(){
