@@ -9,6 +9,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        MainMenu.initialize(primaryStage);
+        MainMenu menu = new MainMenu();
+        menu.initialize(primaryStage);
     }
 }

@@ -9,17 +9,17 @@ import javafx.stage.Stage;
 public class MainMenu {
 
     // Layout des Main Menues inklusive Zuweisung und Positionierung der Buttons
-    private static VBox menuLayout = new VBox(50);
+    private VBox menuLayout = new VBox(50);
 
     // Buttons zum Start und Verlassen des Spiels
-    private static Button startButton = new Button("Start Game");
-    private static Button exitButton = new Button("Exit");
+    private Button startButton = new Button("Start Game");
+    private Button exitButton = new Button("Exit");
 
-    private static Scene menu = new Scene(menuLayout, 300, 300);
+    private Scene menu = new Scene(menuLayout, 300, 300);
 
 
 
-    public static void initialize(Stage stage) {
+    public void initialize(Stage stage) {
         menuLayout.setAlignment(Pos.CENTER);
         menuLayout.getChildren().addAll(startButton, exitButton);
 

@@ -13,33 +13,32 @@ public class GameOverMenu {
 
 
     // Canvas und GraphicsContext
-    private static Canvas gameOverCanvas = new Canvas();
-    private static GraphicsContext gc = gameOverCanvas.getGraphicsContext2D();
+    private Canvas gameOverCanvas = new Canvas();
+    private GraphicsContext gc = gameOverCanvas.getGraphicsContext2D();
 
     // Layout des GameOver-Menüs
-    private static Group root = new Group();
+    private Group root = new Group();
 
-    private static Scene gameOverScene = new Scene(root, 1280, 600);
+    private Scene gameOverScene = new Scene(root, 1280, 600);
 
     // Hintergrund
-    private static Image bgImage = new Image("Pictures/Background/GameOver.png");
-    private static Button backToStartScreenButton = new Button("Zurück zum Hauptmenü");
+    private Image bgImage = new Image("Pictures/Background/GameOver.png");
+    private Button backToStartScreenButton = new Button("Zurück zum Hauptmenü");
 
 
-
-
-    public static void initialize(Stage stage) {
+    public void initialize(Stage stage) {
         root.getChildren().addAll(gameOverCanvas, backToStartScreenButton);
+        gc.drawImage(bgImage, 0, 0);
 
-        backToStartScreenButton.setOnKeyPressed(
+        backToStartScreenButton.setOnAction(
                 e -> {
-                    MainMenu.initialize(stage);
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.initialize(stage);
                     System.out.println("Zurück zum Hauptmenü...");
                 }
         );
 
         stage.setScene(gameOverScene);
         stage.centerOnScreen();
-        gc.drawImage(bgImage, 0, 0);
     }
 }
