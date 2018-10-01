@@ -16,44 +16,44 @@ import java.util.ArrayList;
 public class GameScene {
 
     //Canvas + Graphicscontext
-    private static Canvas gameCanvas = new Canvas(1280, 600);
-    private static GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+    private Canvas gameCanvas = new Canvas(1280, 600);
+    private GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 
     // Stage-Variable für späteres Aufrufen in der handle-Funnktion der GameLoop
-    private static Stage stage;
+    private Stage stage;
 
     //Layout des Game Menues
-    private static Group root = new Group();
+    private Group root = new Group();
 
     //Scene des Game Menues wird initialisiert
-    private static Scene game = new Scene(root, 1280, 600);
+    private Scene game = new Scene(root, 1280, 600);
 
     // Hintergrund
-    private static Image bgImage = new Image("Pictures/Background/Space.jpg");
+    private Image bgImage = new Image("Pictures/Background/Space.jpg");
 
     // Spielfigur erstellen
-    private static Playership playership = new Playership();
+    private Playership playership = new Playership();
 
     // ArrayList eigene Projektile
-    private static ArrayList<Projectile> myProjectileList = new ArrayList<>();
+    private ArrayList<Projectile> myProjectileList = new ArrayList<>();
 
     // ArrayList feindliche Projektile
-    private static ArrayList<Projectile> enemyProjectileList = new ArrayList<>();
+    private ArrayList<Projectile> enemyProjectileList = new ArrayList<>();
 
     // ArrayList Gegner
-    private static ArrayList<Enemy>enemyList = new ArrayList<>();
+    private ArrayList<Enemy>enemyList = new ArrayList<>();
 
     // ArrayList Asteroiden
-    private static ArrayList<Asteroid> asteroidList = new ArrayList<>();
+    private ArrayList<Asteroid> asteroidList = new ArrayList<>();
 
     // ArrayList Player Inputs
-    private static ArrayList<String> userInput = new ArrayList<>();
+    private ArrayList<String> userInput = new ArrayList<>();
 
     // Instanz zum Gegner Spawn
-    private static EnemyFactory factory = new EnemyFactory();
+    private EnemyFactory factory = new EnemyFactory();
 
     //Integer für Highscore
-    private static int highscore = 0;
+    private int highscore = 0;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -87,7 +87,8 @@ public class GameScene {
     }
 
     private void GameOver() {
-        GameOverMenu.initialize(this.stage);
+        GameOverMenu gameOverMenu = new GameOverMenu();
+        gameOverMenu.initialize(this.stage);
     }
 
     private AnimationTimer GameLoop = new AnimationTimer(){
