@@ -87,13 +87,16 @@ public class GameScene {
         stage.setScene(game);
         stage.centerOnScreen();
         this.GameLoop.start();
+
+        Sound.music(Sound.musicList[(int) Math.round(Math.random())], 0.1);
+
     }
 
     private void GameOver() {
 
+        Sound.getMusicClip().close();
         GameOverMenu gameOverMenu = new GameOverMenu();
         gameOverMenu.initialize(this.stage);
-       
 
     }
 
